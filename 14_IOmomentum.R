@@ -300,21 +300,20 @@ ccm0  = fread('../DataRaw/CCMLinkingTable.csv') %>%
     , permno = lpermno
     , linkprim
     , linkdt
-    , linkenddt = if_else(linkenddt == "", "3000-01-01", linkenddt) 
+    , linkenddt = ifelse(is.na(linkenddt), today(), linkenddt) %>% as.Date()
   ) 
-
 
 ### MAKE TWO FLAVORS OF MOMENTUM AND MERGE
 
 # done
 ## customer momentum: weights for an industry are its total sales to other industries: industry comes from rows of make table, matched industries come from cols
-sheet97 = '../DataRaw/Supply_1997-2018_SUM.xlsx'
+sheet97 = '../DataRaw/Supply_1997-2019_SUM.xlsx'
 sheet63 = '../DataRaw/IOMake_Before_Redefinitions_1963-1996_Summary.xlsx'
 
 iomomcust = generate_one_iomom(sheet63,sheet97)
 
 ## supplier momentum: weights for an industry's total purchases from other industries: industry comes from cols of use table, matched industries from from rows
-sheet97 = '../DataRaw/Use_SUT_Framework_1997-2018_SUM.xlsx'
+sheet97 = '../DataRaw/Use_SUT_Framework_1997-2019_SUM.xlsx'
 sheet63 = '../DataRaw/IOUse_Before_Redefinitions_PRO_1963-1996_Summary.xlsx'
 iomomsupp = generate_one_iomom(sheet63,sheet97)
 

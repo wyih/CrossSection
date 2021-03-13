@@ -2,11 +2,11 @@
 ** Execute in the order below since files call data files produced by 
 ** previous files
 
-global pathProject SETPROJECTPATH
-global pathdataEXCHANGE SETDATAPATH
+global pathProject "~/Projects"
+global pathdataEXCHANGE "~/Projects/DataRaw"
 
 // Install packages if not already installed
-ssc install tscollap, replace
+/*ssc install tscollap, replace
 ssc install mdesc, replace
 ssc install freduse, replace
 ssc install fsum, replace
@@ -23,39 +23,39 @@ ssc install relrank, replace
 
 // Also install Judson Caskey's ffind.do for Fama-French industry classifications 
 net from https://sites.google.com/site/judsoncaskey/data
-net install utilities.pkg
+net install utilities.pkg*/
 
 // Add paths
-adopath + "$pathProject/Code/Stata"
+adopath + "$pathProject/CrossSection/Stata"
 
 // Other settings
 set more off, permanently
 
 // Run files
 * Linking tables
-do "$pathProject/Code/Stata/11_PrepareLinkingTables.do"
+do "$pathProject/CrossSection/Stata/11_PrepareLinkingTables.do"
 * Other data
-do "$pathProjecct/Code/12_PrepareOtherData.do"
+do "$pathProject/CrossSection/Stata/12_PrepareOtherData.do"
 * Credit ratings
-do "$pathProject/Code/Stata/13_PrepareRatings.do"
+do "$pathProject/CrossSection/Stata/13_PrepareRatings.do"
 * Annual Compustat
-do "$pathProject/Code/Stata/14_PrepareAnnualCS.do"
+do "$pathProject/CrossSection/Stata/14_PrepareAnnualCS.do"
 * Daily CRSP
-do "$pathProject/Code/Stata/15_PrepareDailyCRSP.do"
+do "$pathProject/CrossSection/Stata/15_PrepareDailyCRSP.do"
 * Monthly CRSP
-do "$pathProject/Code/Stata/16_PrepareMonthlyCRSP.do"
+do "$pathProject/CrossSection/Stata/16_PrepareMonthlyCRSP.do"
 * IBES
-do "$pathProject/Code/Stata/17_PrepareIBES.do"
+do "$pathProject/CrossSection/Stata/17_PrepareIBES.do"
 * Quarterly Compustat
-do "$pathProject/Code/Stata/18_PrepareQuarterlyCS.do"
+do "$pathProject/CrossSection/Stata/18_PrepareQuarterlyCS.do"
 * Input from multiple data sources
-do "$pathProject/Code/Stata/19_PrepareFromMultipleFiles.do"
+do "$pathProject/CrossSection/Stata/19_PrepareFromMultipleFiles.do"
 
 
 *** Merge datasets
-do "$pathProject/Code/Stata/20_MergeDatasets.do"
+do "$pathProject/CrossSection/Stata/20_MergeDatasets.do"
 
 *** Create firm-month signals 
-do "$pathProject/Code/Stata/30_CreateSignals.do"
+do "$pathProject/CrossSection/Stata/30_CreateSignals.do"
 
 

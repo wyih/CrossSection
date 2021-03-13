@@ -6,13 +6,17 @@ library(lubridate)
 
 
 # == Fed Version (pgpass doesn't seem to work)
-wrds <- dbConnect(Postgres(), 
-                  host='wrds-pgdata.wharton.upenn.edu',
-                  port=9737,
-                  sslmode='require',
-                  user='',
-                  password='',
-                  dbname='wrds')
+private <- config::get('wrds') # stored in config.yml
+
+if (!exists("wrds")) {
+  wrds <- dbConnect(Postgres(),
+                    host='wrds-pgdata.wharton.upenn.edu',
+                    port=9737,
+                    dbname='wrds',
+                    user=private$uid,
+                    password=private$pwd,
+                    sslmode='require')
+}
 
 numRowsToPull = -1
 

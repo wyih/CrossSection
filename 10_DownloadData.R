@@ -1,12 +1,14 @@
 ## Settings previously in .RProfile
 library(RPostgres)
+private <- config::get('wrds') # stored in config.yml
+
 if (!exists("wrds")) {
   wrds <- dbConnect(Postgres(),
                     host='wrds-pgdata.wharton.upenn.edu',
                     port=9737,
                     dbname='wrds',
-                    user=rstudioapi::askForPassword("Database username"),
-                    password=rstudioapi::askForPassword("Database password"),
+                    user=private$uid,
+                    password=private$pwd,
                     sslmode='require')
 }
 
@@ -318,21 +320,24 @@ data.table::fwrite(ccm, file = '../DataRaw/CCMLinkingTable.csv')
 
 
 # IPO dates ---------------------------------------------------------------
+# https://site.warrington.ufl.edu/ritter/ipo-data/
+# https://site.warrington.ufl.edu/ritter/files/founding-dates.pdf
 tmp <- tempfile()
-download.file('https://site.warrington.ufl.edu/ritter/files/2019/05/age19752019.xlsx', 
+download.file('https://site.warrington.ufl.edu/ritter/files/IPO-age.xlsx', 
               destfile = tmp, 
               method = 'curl')
  
 ipos = read_excel(path = tmp) %>% 
   transmute(Founding = Founding,
-            Offerdate = `Offer date`,
-            CRSPperm = `CRSP perm`)
+            Offerdate = `Offer Date`,
+            CRSPperm = PERM)
   
 data.table::fwrite(ipos, file = '../DataRaw/IPODates.csv')
 
 # FRED data ---------------------------------------------------------------
 
 # CPI
+pacman::p_load(fredr)
 cpi = fredr(series_id = 'CPIAUCSL') %>% 
   select(-series_id)
 

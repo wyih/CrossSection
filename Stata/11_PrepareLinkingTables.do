@@ -1,7 +1,7 @@
 *** Prepare Compustat-CRSP linkingtable ***
 
 * CRSP-IBES link
-import delimited "$pathdata/DataRawAndrew/iclink.csv", clear varnames(1)
+import delimited "$pathProject/DataRaw/iclink.csv", clear varnames(1)
 keep if score <= 2  // WHICH LINKS DO WE WANT TO KEEP?
 bysort permno (score): keep if _n == 1  // If link to more than one permno, keep the best match
 rename ticker tickerIBES
